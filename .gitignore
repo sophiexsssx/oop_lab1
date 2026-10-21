@@ -1,0 +1,27 @@
+# Build output
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.userprefs
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.swp
+
+# Test results
+TestResults/
+*.trx
+coverage*/
+
+# NuGet
+*.nupkg
+packages/
+
+# macOS
+.DS_Store
+

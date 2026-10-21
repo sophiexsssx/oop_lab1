@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpreadsheetApp.HelpPage"
+             Title="Довідка">
+    <Grid RowDefinitions="*,Auto" Padding="24,16">
+        <ScrollView>
+            <VerticalStackLayout Spacing="10" MaximumWidthRequest="760">
+                <Label Text="Довідка" FontSize="26" FontAttributes="Bold" />
+
+                <Label Text="Як працювати з таблицею" FontSize="18" FontAttributes="Bold" Margin="0,8,0,0" />
+                <Label LineHeight="1.3">
+                    <Label.Text>1. Клацніть клітинку, щоб її обрати. Її ім'я з'явиться ліворуч від рядка введення.
+2. Введіть вираз у рядок введення і натисніть Enter або «Застосувати». «Скасувати» повертає попередній вираз.
+3. Під час введення програма одразу перевіряє синтаксис і показує позицію помилки.
+4. Перемикач «Вираз / Значення» вирішує, що показують клітинки: текст виразів чи результати обчислення.
+5. Кнопки «+ Рядок», «− Рядок», «+ Стовпчик», «− Стовпчик» змінюють розмір таблиці (видаляється останній рядок або стовпчик).
+6. «Зберегти» і «Відкрити» працюють із файлами таблиць у форматі JSON.</Label.Text>
+                </Label>
+
+                <Label Text="Що можна писати у виразі" FontSize="18" FontAttributes="Bold" Margin="0,8,0,0" />
+                <Label LineHeight="1.3">
+                    <Label.Text>• Цілі числа довільної довжини: 0, 42, 123456789012345678901234567890
+• Логічні константи: true, false
+• Посилання на клітинки: A1, B12, AA3 (літери — стовпчик, число — рядок)
+• Круглі дужки: ( … )
+• Функції: max(x, y), min(x, y) — рівно два аргументи
+• Порівняння: =, &lt;, &gt;
+• Логічні операції: not, and, or, eqv (еквівалентність: істина, якщо обидва операнди однакові)</Label.Text>
+                </Label>
+
+                <Label Text="Пріоритет операцій (від найвищого)" FontSize="18" FontAttributes="Bold" Margin="0,8,0,0" />
+                <Label LineHeight="1.3">
+                    <Label.Text>1. дужки, числа, клітинки, max, min
+2. =, &lt;, &gt;  (ланцюжок «1 &lt; 2 &lt; 3» не дозволено — пишіть «(1 &lt; 2) and (2 &lt; 3)»)
+3. not
+4. and
+5. or
+6. eqv</Label.Text>
+                </Label>
+
+                <Label Text="Логічні значення" FontSize="18" FontAttributes="Bold" Margin="0,8,0,0" />
+                <Label LineHeight="1.3">
+                    <Label.Text>Вираз вважається логічним. Число 0 — це ХИБНІСТЬ, будь-яке інше число — ІСТИНА. ІСТИНА у числовому контексті дорівнює 1, ХИБНІСТЬ — 0. Порожня клітинка має значення 0.</Label.Text>
+                </Label>
+
+                <Label Text="Приклади" FontSize="18" FontAttributes="Bold" Margin="0,8,0,0" />
+                <Label FontFamily="Courier New" LineHeight="1.3">
+                    <Label.Text>max(A1, B1) &gt; 10
+not (A1 = 0) and B2 &lt; 5
+(A1 &gt; B1) eqv (C1 &gt; D1)
+min(A1, max(B1, C1)) = 3 or false</Label.Text>
+                </Label>
+
+                <Label Text="Помилки" FontSize="18" FontAttributes="Bold" Margin="0,8,0,0" />
+                <Label LineHeight="1.3">
+                    <Label.Text>Клітинка з помилкою підсвічується червоним і показує «#ПОМИЛКА». Опис помилки видно під рядком введення, коли клітинку обрано, а також у підказці при наведенні миші. Можливі помилки:
+• синтаксична — із номером позиції, де її знайдено (неправильний фрагмент виділяється в рядку введення);
+• циклічне посилання — показується весь цикл, напр. A1 → B1 → A1;
+• посилання на клітинку за межами таблиці;
+• посилання на клітинку, яка сама містить помилку.</Label.Text>
+                </Label>
+
+                <Label Text="Підказка: імена клітинок і функцій можна набирати і в українській розкладці (А1, mіn) — схожі кириличні літери замінюються латинськими автоматично."
+                       FontAttributes="Italic" Margin="0,8,0,0" />
+            </VerticalStackLayout>
+        </ScrollView>
+        <Button Grid.Row="1" Text="Закрити" Clicked="OnCloseClicked" HorizontalOptions="End" Margin="0,12,0,0" />
+    </Grid>
+</ContentPage>
