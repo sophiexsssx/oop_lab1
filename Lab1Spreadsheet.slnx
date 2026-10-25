@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SpreadsheetApp/SpreadsheetApp.csproj" />
+  <Project Path="SpreadsheetEngine.Tests/SpreadsheetEngine.Tests.csproj" />
+  <Project Path="SpreadsheetEngine/SpreadsheetEngine.csproj" />
+</Solution>

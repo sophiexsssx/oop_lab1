@@ -1,0 +1,41 @@
+# Build output
+bin/
+obj/
+artifacts/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.exe
+*.pdb
+*.app/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.rsuser
+*.DotSettings.user
+
+# Test results and coverage
+TestResults/
+*.trx
+coverage*/
+*.coverage
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*~
+
+# macOS / Windows
+.DS_Store
+Thumbs.db

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:SpreadsheetApp"
+             x:Class="SpreadsheetApp.MainPage"
+             Title="Міні-таблиця"
+             BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1A1215}">
+
+    <ContentPage.Resources>
+        <Color x:Key="Rose">#A3245A</Color>
+        <Color x:Key="Plum">#3B1F2B</Color>
+        <Color x:Key="Petal">#F4B6CC</Color>
+        <Color x:Key="Blush">#FCE4EC</Color>
+        <Color x:Key="Muted">#8A6878</Color>
+
+        <Style x:Key="LinkButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Rose}, Dark={StaticResource Petal}}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="10,4" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="MinimumHeightRequest" Value="32" />
+        </Style>
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource Rose}" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="Padding" Value="18,6" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="MinimumHeightRequest" Value="34" />
+        </Style>
+        <Style x:Key="StepButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Blush}, Dark=#3A2530}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Rose}, Dark={StaticResource Petal}}" />
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="CornerRadius" Value="15" />
+            <Setter Property="WidthRequest" Value="30" />
+            <Setter Property="HeightRequest" Value="30" />
+        </Style>
+        <Style x:Key="PanelText" TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Muted}, Dark=#C9A9B7}" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+        <Style x:Key="PanelValue" TargetType="Label">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Plum}, Dark=#F3E6EC}" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="MinimumWidthRequest" Value="30" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="24,16,24,20" RowSpacing="12"
+          BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1A1215}">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto">
+            <Label Text="Міні-таблиця" FontSize="24" FontFamily="OpenSansSemibold" VerticalOptions="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource Plum}, Dark=#F3E6EC}" />
+            <Button Grid.Column="1" Text="Новий" Clicked="OnNewClicked" Style="{StaticResource LinkButton}"
+                    ToolTipProperties.Text="Створити нову порожню таблицю" />
+            <Button Grid.Column="2" Text="Відкрити…" Clicked="OnOpenClicked" Style="{StaticResource LinkButton}"
+                    ToolTipProperties.Text="Відкрити таблицю з файлу" />
+            <Button Grid.Column="3" Text="Зберегти…" Clicked="OnSaveClicked" Style="{StaticResource LinkButton}"
+                    ToolTipProperties.Text="Зберегти таблицю у файл" />
+        </Grid>
+
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="12">
+            <Label Grid.Column="0" x:Name="CellNameLabel" Text="A1" FontSize="16" FontFamily="OpenSansSemibold"
+                   MinimumWidthRequest="44" VerticalOptions="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource Rose}, Dark={StaticResource Petal}}" />
+            <Border Grid.Column="1" Padding="10,0" StrokeThickness="0"
+                    BackgroundColor="{AppThemeBinding Light=#FBF6F8, Dark=#241A1F}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6" />
+                </Border.StrokeShape>
+                <Grid RowDefinitions="*,Auto">
+                    <Entry x:Name="ExpressionEntry"
+                           Placeholder="Вираз, наприклад: max(A1, B1) > 10 and not C1"
+                           FontFamily="Courier New"
+                           ClearButtonVisibility="WhileEditing"
+                           Completed="OnApplyClicked"
+                           TextChanged="OnExpressionTextChanged" />
+                    <BoxView Grid.Row="1" HeightRequest="2" Color="{StaticResource Petal}" />
+                </Grid>
+            </Border>
+            <Button Grid.Column="2" Text="Застосувати" Clicked="OnApplyClicked" Style="{StaticResource PrimaryButton}" />
+            <Button Grid.Column="3" Text="Скасувати" Clicked="OnCancelEditClicked" Style="{StaticResource LinkButton}" />
+        </Grid>
+
+        <Label Grid.Row="2" x:Name="MessageLabel" FontSize="13" FontFamily="Courier New"
+               LineBreakMode="WordWrap" MinimumHeightRequest="18" Margin="56,0,0,0" />
+
+        <Grid Grid.Row="3" ColumnDefinitions="*,230" ColumnSpacing="20">
+
+            <Border Grid.Column="0" StrokeThickness="1" Padding="0"
+                    Stroke="{AppThemeBinding Light=#F4D7E2, Dark=#3E2A33}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="4" />
+                </Border.StrokeShape>
+                <controls:SheetView x:Name="Sheet" />
+            </Border>
+
+            <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto,Auto,*,Auto" RowSpacing="14">
+
+                <VerticalStackLayout Grid.Row="0" Spacing="0">
+                    <Label x:Name="InspectorCellLabel" Text="A1" FontSize="40" FontFamily="OpenSansSemibold"
+                           TextColor="{AppThemeBinding Light={StaticResource Plum}, Dark=#F3E6EC}" />
+                    <Label x:Name="InspectorValueLabel" Text="порожня" FontSize="18" LineBreakMode="TailTruncation"
+                           TextColor="{AppThemeBinding Light={StaticResource Rose}, Dark={StaticResource Petal}}" />
+                </VerticalStackLayout>
+
+                <BoxView Grid.Row="1" HeightRequest="1" Color="{AppThemeBinding Light=#F4D7E2, Dark=#3E2A33}" />
+
+                <Grid Grid.Row="2" ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto"
+                      RowSpacing="10" ColumnSpacing="6">
+                    <Label Grid.Row="0" Text="Рядки" Style="{StaticResource PanelText}" />
+                    <Button Grid.Row="0" Grid.Column="1" Text="−" Clicked="OnRemoveRowClicked" Style="{StaticResource StepButton}"
+                            ToolTipProperties.Text="Видалити останній рядок" />
+                    <Label Grid.Row="0" Grid.Column="2" x:Name="RowCountLabel" Text="10" Style="{StaticResource PanelValue}" />
+                    <Button Grid.Row="0" Grid.Column="3" Text="+" Clicked="OnAddRowClicked" Style="{StaticResource StepButton}"
+                            ToolTipProperties.Text="Додати рядок у кінець таблиці" />
+
+                    <Label Grid.Row="1" Text="Стовпчики" Style="{StaticResource PanelText}" />
+                    <Button Grid.Row="1" Grid.Column="1" Text="−" Clicked="OnRemoveColumnClicked" Style="{StaticResource StepButton}"
+                            ToolTipProperties.Text="Видалити останній стовпчик" />
+                    <Label Grid.Row="1" Grid.Column="2" x:Name="ColumnCountLabel" Text="8" Style="{StaticResource PanelValue}" />
+                    <Button Grid.Row="1" Grid.Column="3" Text="+" Clicked="OnAddColumnClicked" Style="{StaticResource StepButton}"
+                            ToolTipProperties.Text="Додати стовпчик праворуч" />
+                </Grid>
+
+                <VerticalStackLayout Grid.Row="3" Spacing="0">
+                    <Label Text="Показувати в клітинках" Style="{StaticResource PanelText}" Margin="0,0,0,2" />
+                    <RadioButton x:Name="ValueModeRadio" Content="Значення" GroupName="Mode" IsChecked="True"
+                                 TextColor="{AppThemeBinding Light={StaticResource Plum}, Dark=#F3E6EC}"
+                                 CheckedChanged="OnModeChanged" />
+                    <RadioButton x:Name="ExpressionModeRadio" Content="Вирази" GroupName="Mode"
+                                 TextColor="{AppThemeBinding Light={StaticResource Plum}, Dark=#F3E6EC}"
+                                 CheckedChanged="OnModeChanged" />
+                </VerticalStackLayout>
+
+                <Label Grid.Row="4" x:Name="StatusLabel" FontSize="12" VerticalOptions="End" LineBreakMode="WordWrap"
+                       TextColor="{AppThemeBinding Light={StaticResource Muted}, Dark=#C9A9B7}" />
+
+                <HorizontalStackLayout Grid.Row="5" Spacing="4" Margin="-10,0,0,0">
+                    <Button Text="Довідка" Clicked="OnHelpClicked" Style="{StaticResource LinkButton}" />
+                    <Button Text="Про програму" Clicked="OnAboutClicked" Style="{StaticResource LinkButton}" />
+                </HorizontalStackLayout>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>
